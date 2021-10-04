@@ -424,7 +424,7 @@ contract ForceMove is IForceMove, StatusManager {
             'Unacceptable whoSignedWhat array'
         );
         for (uint256 i = 0; i < nParticipants; i++) {
-            address signer = _recoverSigner(stateHashes[whoSignedWhat[i]], sigs[i]);
+            address signer = _recoverSigner(stateHashes[whoSignedWhat[i]], sigs[whoSignedWhat[i]]);
             if (signer != participants[i]) {
                 return false;
             }
