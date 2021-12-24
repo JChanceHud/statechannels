@@ -38,7 +38,6 @@ const provider = getTestProvider();
 
 let ForceMove: Contract;
 
-const chainId = process.env.CHAIN_NETWORK_ID;
 const participants = ['', '', ''];
 const wallets = new Array(3);
 const challengeDuration = 86400; // 1 day
@@ -58,7 +57,6 @@ for (let i = 0; i < 3; i++) {
 }
 
 const twoPartyChannel: Channel = {
-  chainId: process.env.CHAIN_NETWORK_ID,
   channelNonce: 0x1,
   participants: [wallets[0].address, wallets[1].address],
 };
@@ -150,7 +148,6 @@ describe('challenge', () => {
     async ({initialFingerprint, stateData, challengeSignatureType, reasonString}) => {
       const {appDatas, whoSignedWhat} = stateData;
       const channel: Channel = {
-        chainId,
         participants,
         channelNonce,
       };
@@ -224,13 +221,10 @@ describe('challenge', () => {
         // Check this information is enough to respond
         expect(eventChannelId).toEqual(channelId);
         expect(eventTurnNumRecord).toEqual(largestTurnNum);
-        expect(
-          ethers.BigNumber.from(eventFixedPart[0]).eq(ethers.BigNumber.from(fixedPart.chainId))
-        ).toBe(true);
-        expect(eventFixedPart[1]).toEqual(fixedPart.participants);
-        expect(eventFixedPart[2]).toEqual(fixedPart.channelNonce);
-        expect(eventFixedPart[3]).toEqual(fixedPart.appDefinition);
-        expect(eventFixedPart[4]).toEqual(fixedPart.challengeDuration);
+        expect(eventFixedPart[0]).toEqual(fixedPart.participants);
+        expect(eventFixedPart[1]).toEqual(fixedPart.channelNonce);
+        expect(eventFixedPart[2]).toEqual(fixedPart.appDefinition);
+        expect(eventFixedPart[3]).toEqual(fixedPart.challengeDuration);
         expect(eventIsFinal).toEqual(isFinalCount > 0);
         expect(eventVariableParts[eventVariableParts.length - 1][0]).toEqual(
           variableParts[variableParts.length - 1].outcome

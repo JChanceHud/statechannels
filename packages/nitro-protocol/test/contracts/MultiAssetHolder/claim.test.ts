@@ -152,6 +152,7 @@ describe('claim', () => {
       Object.keys(tOutcomeBefore).forEach(key =>
         allocations.push({
           destination: key,
+          chainId: process.env.CHAIN_NETWORK_ID ?? '0x1',
           amount: tOutcomeBefore[key].toString(),
           metadata: '0x',
           allocationType: AllocationType.simple,
@@ -187,6 +188,7 @@ describe('claim', () => {
               allocationType: AllocationType.guarantee,
               amount: heldBefore[addresses.g].toString(),
               destination: targetId,
+              chainId: process.env.CHAIN_NETWORK_ID ?? '0x1',
               metadata: encodedGuaranteeData,
             },
           ],
@@ -254,6 +256,7 @@ describe('claim', () => {
         Object.keys(tOutcomeAfter).forEach(key => {
           allocationAfter.push({
             destination: key,
+            chainId: process.env.CHAIN_NETWORK_ID ?? '0x1',
             amount: tOutcomeAfter[key].toString(),
             metadata: '0x',
             allocationType: AllocationType.simple,

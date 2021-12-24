@@ -15,7 +15,6 @@ interface IForceMove {
     }
 
     struct FixedPart {
-        uint256 chainId;
         address[] participants;
         uint48 channelNonce;
         address appDefinition;

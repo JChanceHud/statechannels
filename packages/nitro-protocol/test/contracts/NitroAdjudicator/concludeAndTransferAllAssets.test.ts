@@ -132,7 +132,7 @@ describe('concludeAndTransferAllAssets', () => {
       payouts: OutcomeShortHand;
       reasonString;
     }) => {
-      const channel: Channel = {chainId, participants, channelNonce};
+      const channel: Channel = {participants, channelNonce};
       const channelId = getChannelId(channel);
       addresses.c = channelId;
       const support = oneState;

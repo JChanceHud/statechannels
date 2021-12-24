@@ -72,6 +72,7 @@ describe('validTransition', () => {
       Object.keys(balancesA).forEach(key =>
         allocationsA.push({
           destination: key,
+          chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
           amount: balancesA[key],
           allocationType: isAllocation[0] ? AllocationType.simple : AllocationType.guarantee,
           metadata: isAllocation[0] ? '0x' : encodeGuaranteeData(guaranteeDestinations),
@@ -95,6 +96,7 @@ describe('validTransition', () => {
       Object.keys(balancesB).forEach(key =>
         allocationsB.push({
           destination: key,
+          chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
           amount: balancesB[key],
           allocationType: isAllocation[1] ? AllocationType.simple : AllocationType.guarantee,
           metadata: isAllocation[1] ? '0x' : encodeGuaranteeData(guaranteeDestinations),

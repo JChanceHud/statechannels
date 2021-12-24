@@ -46,7 +46,6 @@ function _requireExtraImplicitChecks(fromState: State, toState: State) {
   _require(toState.turnNum == fromState.turnNum + 1, 'turnNum must increment by one');
 
   // constants: these are only checked *implicitly* on chain
-  _require(toState.channel.chainId == fromState.channel.chainId, 'chainId must not change');
   _require(
     isEqual(toState.channel.participants, fromState.channel.participants),
     'participants must not change'

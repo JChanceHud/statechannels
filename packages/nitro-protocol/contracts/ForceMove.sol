@@ -321,16 +321,6 @@ contract ForceMove is IForceMove, StatusManager {
         emit Concluded(channelId, uint48(block.timestamp)); //solhint-disable-line not-rely-on-time
     }
 
-    function getChainID() public pure returns (uint256) {
-        uint256 id;
-        /* solhint-disable no-inline-assembly */
-        assembly {
-            id := chainid()
-        }
-        /* solhint-disable no-inline-assembly */
-        return id;
-    }
-
     /**
      * @notice Validates input for several external methods.
      * @dev Validates input for several external methods.
@@ -831,9 +821,8 @@ contract ForceMove is IForceMove, StatusManager {
      * @return channelId
      */
     function _getChannelId(FixedPart memory fixedPart) internal pure returns (bytes32 channelId) {
-        require(fixedPart.chainId == getChainID(), 'Incorrect chainId');
         channelId = keccak256(
-            abi.encode(getChainID(), fixedPart.participants, fixedPart.channelNonce)
+            abi.encode(fixedPart.participants, fixedPart.channelNonce)
         );
     }
 }

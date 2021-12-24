@@ -246,6 +246,7 @@ export function computeOutcome(outcomeShortHand: OutcomeShortHand): Outcome {
     Object.keys(outcomeShortHand[asset]).forEach(destination =>
       allocations.push({
         destination,
+        chainId: '0x0',
         amount: BigNumber.from(outcomeShortHand[asset][destination]).toHexString(),
         metadata: '0x',
         allocationType: AllocationType.simple,
@@ -282,6 +283,7 @@ export const largeOutcome = (
         {
           allocations: Array(numAllocationItems).fill({
             destination: randomDestination,
+            chainId: '0x0',
             amount: '0x01',
             allocationType: AllocationType.simple,
             metadata: '0x',

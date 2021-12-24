@@ -85,6 +85,7 @@ export function computeClaimEffectsAndInteractions(
   for (let i = 0; i < sourceAllocations.length; i++) {
     newSourceAllocations.push({
       destination: sourceAllocations[i].destination,
+      chainId: sourceAllocations[i].chainId,
       amount: sourceAllocations[i].amount,
       metadata: sourceAllocations[i].metadata,
       allocationType: sourceAllocations[i].allocationType,
@@ -93,12 +94,14 @@ export function computeClaimEffectsAndInteractions(
   for (let i = 0; i < targetAllocations.length; i++) {
     newTargetAllocations.push({
       destination: targetAllocations[i].destination,
+      chainId: targetAllocations[i].chainId,
       amount: targetAllocations[i].amount,
       metadata: targetAllocations[i].metadata,
       allocationType: targetAllocations[i].allocationType,
     });
     exitAllocations.push({
       destination: targetAllocations[i].destination,
+      chainId: targetAllocations[i].chainId,
       amount: '0x00',
       metadata: targetAllocations[i].metadata,
       allocationType: targetAllocations[i].allocationType,
@@ -208,6 +211,7 @@ export function computeTransferEffectsAndInteractions(
     indices.length > 0 ? indices.length : allocations.length
   ).fill({
     destination: constants.HashZero,
+    chainId: '0x0',
     amount: '0x00',
     metadata: '0x',
     allocationType: 0,
@@ -219,6 +223,7 @@ export function computeTransferEffectsAndInteractions(
   for (let i = 0; i < allocations.length; i++) {
     newAllocations.push({
       destination: allocations[i].destination,
+      chainId: allocations[i].chainId,
       amount: BigNumber.from(0).toHexString(),
       metadata: allocations[i].metadata,
       allocationType: allocations[i].allocationType,
@@ -230,6 +235,7 @@ export function computeTransferEffectsAndInteractions(
         .toHexString();
       exitAllocations[k] = {
         destination: allocations[i].destination,
+        chainId: allocations[i].chainId,
         amount: affordsForDestination.toHexString(),
         metadata: allocations[i].metadata,
         allocationType: allocations[i].allocationType,

@@ -21,7 +21,6 @@ export interface State {
  * The part of a State which does not ordinarily change during state channel updates
  */
 export interface FixedPart {
-  chainId: Uint256;
   participants: Address[];
   channelNonce: Uint48;
   appDefinition: Address;
@@ -34,8 +33,8 @@ export interface FixedPart {
  */
 export function getFixedPart(state: State): FixedPart {
   const {appDefinition, challengeDuration, channel} = state;
-  const {chainId, participants, channelNonce} = channel;
-  return {chainId, participants, channelNonce, appDefinition, challengeDuration};
+  const {participants, channelNonce} = channel;
+  return {participants, channelNonce, appDefinition, challengeDuration};
 }
 
 /**

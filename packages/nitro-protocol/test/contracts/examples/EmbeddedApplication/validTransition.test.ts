@@ -65,18 +65,21 @@ function absorbOutcomeOfXIntoJ(xOutcome: Outcome): Outcome {
       allocations: [
         {
           destination: xOutcome[0].allocations[0].destination,
+          chainId: xOutcome[0].allocations[0].chainId,
           amount: xOutcome[0].allocations[0].amount,
           metadata: '0x',
           allocationType: AllocationType.simple,
         },
         {
           destination: xOutcome[0].allocations[1].destination,
+          chainId: xOutcome[0].allocations[1].chainId,
           amount: xOutcome[0].allocations[1].amount,
           metadata: '0x',
           allocationType: AllocationType.simple,
         },
         {
           destination: convertAddressToBytes32(Irene.address),
+          chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
           amount: '0xa',
           metadata: '0x',
           allocationType: AllocationType.simple,
@@ -101,12 +104,14 @@ const sixFour: Outcome = [
     allocations: [
       {
         destination: convertAddressToBytes32(Alice.address),
+        chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
         amount: '0x6',
         metadata: '0x',
         allocationType: AllocationType.simple,
       },
       {
         destination: convertAddressToBytes32(Bob.address),
+        chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
         amount: '0x4',
         metadata: '0x',
         allocationType: AllocationType.simple,
@@ -121,12 +126,14 @@ const fourSix: Outcome = [
     allocations: [
       {
         destination: convertAddressToBytes32(Alice.address),
+        chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
         amount: '0x4',
         metadata: '0x',
         allocationType: AllocationType.simple,
       },
       {
         destination: convertAddressToBytes32(Bob.address),
+        chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
         amount: '0x6',
         metadata: '0x',
         allocationType: AllocationType.simple,
@@ -139,7 +146,6 @@ const stateForX: State = {
   turnNum: 4,
   isFinal: false,
   channel: {
-    chainId: '0x1',
     participants: [Alice.address, Bob.address],
     channelNonce: 87,
   },
@@ -153,7 +159,6 @@ const greaterStateForX: State = {
   turnNum: 5,
   isFinal: false,
   channel: {
-    chainId: '0x1',
     participants: [Alice.address, Bob.address],
     channelNonce: 87,
   },

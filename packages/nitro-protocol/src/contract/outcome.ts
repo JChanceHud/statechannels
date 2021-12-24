@@ -8,7 +8,7 @@ import {Bytes32} from './types';
 // CONSTANTS
 //
 
-export const MAX_OUTCOME_ITEMS = 600;
+export const MAX_OUTCOME_ITEMS = 570;
 
 //
 // Types
@@ -75,12 +75,14 @@ const exampleGuaranteeOutcome1: GuaranteeOutcome = [
     allocations: [
       {
         destination: '0xjointchannel1',
+        chainId: '0x0',
         amount: '0xa',
         allocationType: ExitFormat.AllocationType.guarantee,
         metadata: encodeGuaranteeData([B_ADDRESS, A_ADDRESS]),
       },
       {
         destination: '0xjointchannel2',
+        chainId: '0x0',
         amount: '0xa',
         allocationType: ExitFormat.AllocationType.guarantee,
         metadata: encodeGuaranteeData([A_ADDRESS, B_ADDRESS]),

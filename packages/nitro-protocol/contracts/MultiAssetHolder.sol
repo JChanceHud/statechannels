@@ -144,6 +144,7 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
         _requireMatchingFingerprint(stateHash, keccak256(outcomeBytes), channelId);
 
         outcome = Outcome.decodeExit(outcomeBytes);
+        _requireIndicesOnChain(indices, outcome[assetIndex].allocations);
         asset = outcome[assetIndex].asset;
         initialAssetHoldings = holdings[asset][channelId];
     }
@@ -177,6 +178,7 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
         for (uint256 i = 0; i < allocations.length; i++) {
             // copy destination, allocationType and metadata parts
             newAllocations[i].destination = allocations[i].destination;
+            newAllocations[i].chainId = allocations[i].chainId;
             newAllocations[i].allocationType = allocations[i].allocationType;
             newAllocations[i].metadata = allocations[i].metadata;
             // compute new amount part
@@ -190,6 +192,7 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
                 // increase the relevant exit allocation
                 exitAllocations[k] = Outcome.Allocation(
                     allocations[i].destination,
+                    allocations[i].chainId,
                     affordsForDestination,
                     allocations[i].allocationType,
                     allocations[i].metadata
@@ -345,6 +348,10 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
         bytes32 targetChannelId = sourceOutcome[sourceAssetIndex].allocations[claimArgs
             .indexOfTargetInSource]
             .destination;
+        require(
+          sourceOutcome[sourceAssetIndex].allocations[claimArgs.indexOfTargetInSource].chainId == getChainID(),
+          'wrong chain for source allocation'
+        );
 
         // target checks
         require(targetOutcome[targetAssetIndex].asset == asset, 'targetAsset != guaranteeAsset');
@@ -354,6 +361,7 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
             keccak256(targetOutcomeBytes),
             targetChannelId
         );
+        _requireIndicesOnChain(claimArgs.targetAllocationIndicesToPayout, targetOutcome[targetAssetIndex].allocations);
     }
 
     /**
@@ -389,16 +397,19 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
         exitAllocations = new Outcome.Allocation[](targetAllocations.length);
         for (uint256 i = 0; i < sourceAllocations.length; i++) {
             newSourceAllocations[i].destination = sourceAllocations[i].destination;
+            newSourceAllocations[i].chainId = sourceAllocations[i].chainId;
             newSourceAllocations[i].amount = sourceAllocations[i].amount;
             newSourceAllocations[i].metadata = sourceAllocations[i].metadata;
             newSourceAllocations[i].allocationType = sourceAllocations[i].allocationType;
         }
         for (uint256 i = 0; i < targetAllocations.length; i++) {
             newTargetAllocations[i].destination = targetAllocations[i].destination;
+            newTargetAllocations[i].chainId = targetAllocations[i].chainId;
             newTargetAllocations[i].amount = targetAllocations[i].amount;
             newTargetAllocations[i].metadata = targetAllocations[i].metadata;
             newTargetAllocations[i].allocationType = targetAllocations[i].allocationType;
             exitAllocations[i].destination = targetAllocations[i].destination;
+            exitAllocations[i].chainId = targetAllocations[i].chainId;
             exitAllocations[i].amount = 0; // default to zero
             exitAllocations[i].metadata = targetAllocations[i].metadata;
             exitAllocations[i].allocationType = targetAllocations[i].allocationType;
@@ -586,6 +597,17 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
         return address(uint160(uint256(destination)));
     }
 
+    function getChainID() public pure returns (uint256) {
+        uint256 id;
+        /* solhint-disable no-inline-assembly */
+        assembly {
+            id := chainid()
+        }
+        /* solhint-disable no-inline-assembly */
+        return id;
+    }
+
+
     // **************
     // Requirers
     // **************
@@ -635,6 +657,13 @@ contract MultiAssetHolder is IMultiAssetHolder, StatusManager {
     function _requireIncreasingIndices(uint256[] memory indices) internal pure {
         for (uint256 i = 0; i + 1 < indices.length; i++) {
             require(indices[i] < indices[i + 1], 'Indices must be sorted');
+        }
+    }
+
+    function _requireIndicesOnChain(uint256[] memory indices, Outcome.Allocation[] memory allocations) internal pure {
+        uint256 chainId = getChainID();
+        for (uint256 i = 0; i < indices.length; i++) {
+            require(allocations[indices[i]].chainId == chainId, 'invalid chainId for allocation');
         }
     }
 

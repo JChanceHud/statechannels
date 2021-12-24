@@ -52,11 +52,10 @@ export function getChallengeRegisteredEvent(eventResult: any[]): ChallengeRegist
   }: ChallengeRegisteredStruct = eventResult.slice(-1)[0].args;
 
   // Fixed part
-  const chainId = BigNumber.from(fixedPart[0]).toHexString();
-  const participants = fixedPart[1].map(p => BigNumber.from(p).toHexString());
-  const channelNonce = fixedPart[2];
-  const appDefinition = fixedPart[3];
-  const challengeDuration = BigNumber.from(fixedPart[4]).toNumber();
+  const participants = fixedPart[0].map(p => BigNumber.from(p).toHexString());
+  const channelNonce = fixedPart[1];
+  const appDefinition = fixedPart[2];
+  const challengeDuration = BigNumber.from(fixedPart[3]).toNumber();
 
   // Variable part
   const variableParts: VariablePart[] = variablePartsUnstructured.map(v => {
@@ -65,7 +64,7 @@ export function getChallengeRegisteredEvent(eventResult: any[]): ChallengeRegist
     return {outcome, appData};
   });
 
-  const channel: Channel = {chainId, channelNonce, participants};
+  const channel: Channel = {channelNonce, participants};
   const challengeStates: SignedState[] = variableParts.map((v, i) => {
     const turnNum = turnNumRecord - (variableParts.length - i - 1);
     const signature = sigs[i];
@@ -118,7 +117,7 @@ export function getChallengeClearedEvent(
     // NOTE: args value is an array of the inputted arguments, not an object with labelled keys
     // ethers.js should change this, and when it does, we can use the commented out type
     const args /* RespondTransactionArguments */ = decodedTransaction.args;
-    const [chainId, participants, channelNonce, appDefinition, challengeDuration] = args[2];
+    const [participants, channelNonce, appDefinition, challengeDuration] = args[2];
     const isFinal = args[1][1];
     const outcome = decodeOutcome(args[3][1][0]);
     const appData = args[3][1][1];
@@ -138,7 +137,7 @@ export function getChallengeClearedEvent(
         isFinal,
         outcome,
         appData,
-        channel: {chainId: BigNumber.from(chainId).toHexString(), channelNonce, participants},
+        channel: {channelNonce, participants},
         turnNum: BigNumber.from(newTurnNumRecord).toNumber(),
       },
     };

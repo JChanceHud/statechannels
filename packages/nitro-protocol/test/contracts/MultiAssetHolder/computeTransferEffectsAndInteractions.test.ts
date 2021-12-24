@@ -19,6 +19,7 @@ const randomAllocations = (numAllocations: number): Allocation[] => {
   return numAllocations > 0
     ? [...Array(numAllocations)].map(() => ({
         destination: randomExternalDestination(),
+        chainId: process.env.CHAIN_NETWORK_ID ?? '0x1',
         amount: BigNumber.from(Math.ceil(Math.random() * 10)).toHexString(),
         metadata: '0x',
         allocationType: AllocationType.simple,
@@ -53,6 +54,7 @@ describe('MultiAssetHolder.compute_transfer_effects_and_interactions', () => {
     expect(result.newAllocations).toMatchObject(
       locallyComputedNewAllocation.newAllocations.map(a => ({
         ...a,
+        chainId: BigNumber.from(a.chainId),
         amount: BigNumber.from(a.amount),
       }))
     );
@@ -62,6 +64,7 @@ describe('MultiAssetHolder.compute_transfer_effects_and_interactions', () => {
     expect(result.exitAllocations).toMatchObject(
       locallyComputedNewAllocation.exitAllocations.map(a => ({
         ...a,
+        chainId: BigNumber.from(a.chainId),
         amount: BigNumber.from(a.amount),
       }))
     );

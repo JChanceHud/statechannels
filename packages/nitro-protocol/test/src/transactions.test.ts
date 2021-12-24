@@ -20,7 +20,6 @@ const walletB = Wallet.createRandom();
 // TODO use 3x participants to match other tests
 
 const channel: Channel = {
-  chainId: '0x1',
   channelNonce: getRandomNonce('transactions'),
   participants: [walletA.address, walletB.address], // 2 participants is the most common usecase
 };

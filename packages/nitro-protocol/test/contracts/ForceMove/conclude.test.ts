@@ -99,7 +99,7 @@ describe('conclude', () => {
   `(
     '$description', // For the purposes of this test, chainId and participants are fixed, making channelId 1-1 with channelNonce
     async ({initialFingerprint, largestTurnNum, support, reasonString}) => {
-      const channel: Channel = {chainId, participants, channelNonce};
+      const channel: Channel = {participants, channelNonce};
       const channelId = getChannelId(channel);
       const {appData, whoSignedWhat} = support;
       const numStates = appData.length;
@@ -148,7 +148,7 @@ describe('conclude', () => {
   );
 
   it('Reverts to prevent an underflow', async () => {
-    const channel: Channel = {chainId, participants, channelNonce};
+    const channel: Channel = {participants, channelNonce};
     const state: State = {
       isFinal: true,
       channel,

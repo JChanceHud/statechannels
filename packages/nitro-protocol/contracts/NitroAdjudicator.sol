@@ -66,10 +66,16 @@ contract NitroAdjudicator is ForceMove, MultiAssetHolder {
         Outcome.SingleAssetExit[] memory exit = new Outcome.SingleAssetExit[](outcome.length);
         uint256[] memory initialHoldings = new uint256[](outcome.length);
         uint256[] memory totalPayouts = new uint256[](outcome.length);
+        uint256 chainId = getChainID();
         for (uint256 assetIndex = 0; assetIndex < outcome.length; assetIndex++) {
             Outcome.SingleAssetExit memory assetOutcome = outcome[assetIndex];
             Outcome.Allocation[] memory allocations = assetOutcome.allocations;
             address asset = outcome[assetIndex].asset;
+            uint256[] storage indices;
+            for (uint256 i = 0; i < allocations.length; i++) {
+              if (allocations[i].chainId != chainId) continue;
+              indices.push(i);
+            }
             initialHoldings[assetIndex] = holdings[asset][channelId];
             (
                 Outcome.Allocation[] memory newAllocations,
@@ -79,7 +85,7 @@ contract NitroAdjudicator is ForceMove, MultiAssetHolder {
             ) = compute_transfer_effects_and_interactions(
                 initialHoldings[assetIndex],
                 allocations,
-                new uint256[](0)
+                indices
             );
             if (!allocatesOnlyZeros) allocatesOnlyZerosForAllAssets = false;
             totalPayouts[assetIndex] = totalPayoutsForAsset;

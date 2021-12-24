@@ -81,7 +81,7 @@ describe('respond', () => {
       slotEmpty,
       reasonString,
     }) => {
-      const channel: Channel = {chainId, channelNonce, participants};
+      const channel: Channel = {channelNonce, participants};
       const channelId = getChannelId(channel);
 
       const challengeState: State = {

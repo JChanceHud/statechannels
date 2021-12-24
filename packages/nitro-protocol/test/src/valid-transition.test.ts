@@ -7,7 +7,6 @@ const walletA = Wallet.createRandom();
 const walletB = Wallet.createRandom();
 
 const channel: Channel = {
-  chainId: '0x1',
   channelNonce: 0,
   participants: [walletA.address, walletB.address], // 2 participants is the most common usecase
 };
@@ -38,7 +37,6 @@ const incorrectTurnNumCases: TestCaseWithError[] = [
 ]
 //prettier-ignore
 const changedAConstantCases: TestCaseWithError[] = [
-  [/chainId must not change/, {}, { channel: {...baseToState.channel, chainId: '0x2'}}],
   [/participants must not change/, {}, { channel: {...baseToState.channel, participants: [baseToState.channel[0]]}}],
   [/channelNonce must not change/, {}, { channel: {... baseToState.channel, channelNonce: baseToState.channel.channelNonce + 1}} ],
   [/appDefinition must not change/, {}, { appDefinition: channel.participants[0]} ],

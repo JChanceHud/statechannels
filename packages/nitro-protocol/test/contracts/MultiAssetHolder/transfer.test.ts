@@ -93,6 +93,7 @@ describe('transfer', () => {
       Object.keys(setOutcome).forEach(key =>
         allocations.push({
           destination: key,
+          chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
           amount: setOutcome[key],
           metadata: '0x',
           allocationType: AllocationType.simple,
@@ -148,6 +149,7 @@ describe('transfer', () => {
         Object.keys(newOutcome).forEach(key => {
           allocationsAfter.push({
             destination: key,
+            chainId: process.env.CHAIN_NETWORK_ID ?? '0x01',
             amount: newOutcome[key],
             metadata: '0x',
             allocationType: AllocationType.simple,

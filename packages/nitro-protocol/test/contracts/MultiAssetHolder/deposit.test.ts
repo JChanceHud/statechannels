@@ -73,7 +73,7 @@ describe('deposit', () => {
     amount = BigNumber.from(amount);
     heldAfter = BigNumber.from(heldAfter);
 
-    const destinationChannel: Channel = {chainId, channelNonce, participants};
+    const destinationChannel: Channel = {channelNonce, participants};
     const destination = getChannelId(destinationChannel);
 
     if (asset === ERC20) {

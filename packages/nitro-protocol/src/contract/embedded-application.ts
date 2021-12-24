@@ -39,7 +39,6 @@ export function encodeEmbeddedApplicationData(data: EmbeddedApplicationData): By
                 name: 'fixedPart',
                 type: 'tuple',
                 components: [
-                  {name: 'chainId', type: 'uint256'},
                   {name: 'participants', type: 'address[]'},
                   {name: 'channelNonce', type: 'uint48'},
                   {name: 'appDefinition', type: 'address'},

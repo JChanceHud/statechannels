@@ -43,7 +43,6 @@ describe('validTransition', () => {
   it('Transitions between States with mocked-up data are valid', async () => {
     const channel: Channel = {
       participants: [Wallet.createRandom().address, Wallet.createRandom().address],
-      chainId: process.env.CHAIN_NETWORK_ID,
       channelNonce: getRandomNonce('trivialApp'),
     };
     const fromState: State = {

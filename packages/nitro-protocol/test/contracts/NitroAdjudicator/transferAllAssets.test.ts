@@ -82,7 +82,7 @@ describe('transferAllAssets', () => {
       payouts: OutcomeShortHand;
       reasonString: string;
     }) => {
-      const channel: Channel = {chainId, channelNonce, participants};
+      const channel: Channel = {channelNonce, participants};
       const channelId = getChannelId(channel);
       addresses.c = channelId;
 
